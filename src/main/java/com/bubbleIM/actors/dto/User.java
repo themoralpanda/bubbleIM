@@ -1,13 +1,15 @@
-package com.bubbleIM.events;
+package com.bubbleIM.actors.dto;
 
 import com.google.common.base.MoreObjects;
+import org.glassfish.grizzly.websockets.WebSocket;
 
-public class LoginEvent {
+public class User {
 
-  private String connectionID;
   private String username;
   private String password;
-  private long timestamp;
+  private String connectionID;
+  private WebSocket socket;
+  private String sessionID;
 
   public String getUsername() {
     return username;
@@ -33,12 +35,20 @@ public class LoginEvent {
     this.connectionID = connectionID;
   }
 
-  public long getTimestamp() {
-    return timestamp;
+  public WebSocket getSocket() {
+    return socket;
   }
 
-  public void setTimestamp(long timestamp) {
-    this.timestamp = timestamp;
+  public void setSocket(WebSocket socket) {
+    this.socket = socket;
+  }
+
+  public String getSessionID() {
+    return sessionID;
+  }
+
+  public void setSessionID(String sessionID) {
+    this.sessionID = sessionID;
   }
 
   @Override
@@ -47,8 +57,8 @@ public class LoginEvent {
         .add("username", username)
         .add("password", password)
         .add("connectionID", connectionID)
-        .add("timestamp", timestamp)
+        .add("socket", socket)
+        .add("sessionID", sessionID)
         .toString();
   }
-
 }

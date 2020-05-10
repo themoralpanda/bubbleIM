@@ -3,7 +3,7 @@ plugins {
     id 'idea'
 }
 
-apply plugin : "java"
+apply plugin: "java"
 
 group 'org.example'
 version '1.0-SNAPSHOT'
@@ -15,7 +15,7 @@ repositories {
 }
 
 ext {
-    javaMainClass = "com.bubbleIM.Boot"
+    javaMainClass = "com.bubbleIM.AppLauncher"
     jerseyVersion = "2.30.1"
 }
 
@@ -29,12 +29,10 @@ dependencies {
             [group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'],
             [group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'],
             [group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'],
-            [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.11.0'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'],
             [group: 'com.google.inject', name: 'guice', version: '4.2.3'],
             [group: 'com.typesafe.akka', name: 'akka-actor_2.13', version: '2.6.5']
-
     )
-
 
 
     // https://mvnrepository.com/artifact/org.testng/testng

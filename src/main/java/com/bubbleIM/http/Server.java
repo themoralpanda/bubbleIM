@@ -18,6 +18,7 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 public class Server {
+
   private final String GRIZZLY = "grizzly";
   private HttpServer httpServer;
 
@@ -25,7 +26,6 @@ public class Server {
     URI baseUri = UriBuilder.fromUri("http://localhost/").port(8081).build();
     ResourceConfig resourceConfig = new ResourceConfig(RootResource.class, UserResource.class);
     httpServer = GrizzlyHttpServerFactory.createHttpServer(baseUri, resourceConfig, false);
-
 
     NetworkListener websocketListener = new NetworkListener("websocket", "localhost", 8082);
 //    Iterator it = websocketListener.getFilterChain().iterator();
@@ -37,13 +37,12 @@ public class Server {
     httpServer.addListener(websocketListener);
 
 
-
   }
 
   public void initWebSockets(WebSocketApplication websocketApplication) {
     WebSocketAddOn webSocketAddOn = new WebSocketAddOn();
     httpServer.getListener("websocket").registerAddOn(webSocketAddOn);
-    WebSocketEngine.getEngine().register("","/chat",websocketApplication);
+    WebSocketEngine.getEngine().register("", "/chat", websocketApplication);
   }
 
   public void startUp() {
@@ -55,7 +54,7 @@ public class Server {
   }
 
   public void shutdown() {
-    if(httpServer.isStarted()) {
+    if (httpServer.isStarted()) {
       GrizzlyFuture shutdownResult = httpServer.shutdown();
       shutdownResult.addCompletionHandler(new CompletionHandler() {
         @Override

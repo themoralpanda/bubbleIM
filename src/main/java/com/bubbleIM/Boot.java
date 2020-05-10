@@ -1,7 +1,7 @@
 package com.bubbleIM;
 
 import akka.actor.ActorSystem;
-import com.bubbleIM.events.EventModule;
+import com.bubbleIM.actors.AkkaModule;
 import com.bubbleIM.http.Server;
 import com.bubbleIM.websockets.SocketManager;
 import com.google.inject.AbstractModule;
@@ -11,11 +11,12 @@ import org.glassfish.grizzly.websockets.WebSocketApplication;
 
 public class Boot {
 
+  private static ActorSystem actorSystem;
   private static Injector injector;
 
-  public static void main(String args[]) {
+  public void startup() {
     //Start Http server
-    ActorSystem actorSystem = ActorSystem.create("BubbleIM");
+    actorSystem = ActorSystem.create("BubbleIM");
 
     injector = Guice.createInjector(
         new AbstractModule() {
@@ -24,13 +25,13 @@ public class Boot {
             bind(ActorSystem.class).toInstance(actorSystem);
           }
         },
-        new EventModule());
-
+        new AkkaModule());
     Server httpServer = new Server();
     WebSocketApplication chatApp = new SocketManager();
     httpServer.initWebSockets(chatApp);
     httpServer.startUp();
 
+    injector.injectMembers(this);
     Runtime.getRuntime().addShutdownHook(new Thread(
         () -> {
           httpServer.shutdown();
@@ -40,5 +41,9 @@ public class Boot {
 
   public static Injector getInjector() {
     return injector;
+  }
+
+  public static ActorSystem getActorSystem() {
+    return actorSystem;
   }
 }

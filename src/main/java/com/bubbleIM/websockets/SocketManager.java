@@ -1,7 +1,10 @@
 package com.bubbleIM.websockets;
 
 import akka.event.EventStream;
+import com.bubbleIM.Boot;
+import com.bubbleIM.events.internal.UserConnectionEvent;
 import com.google.inject.Inject;
+import java.util.UUID;
 import org.glassfish.grizzly.websockets.DataFrame;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.glassfish.grizzly.websockets.WebSocketApplication;
@@ -16,6 +19,7 @@ public class SocketManager extends WebSocketApplication {
   private EventStream eventStream;
 
   public SocketManager() {
+    Boot.getInjector().injectMembers(this);
     logger.info("Created chat application");
   }
 
@@ -24,7 +28,9 @@ public class SocketManager extends WebSocketApplication {
     logger.info("Connected: {}", socket);
     super.onConnect(socket);
     //Publish a New Socket Request
-    eventStream.publish(new NewConnectionRequest(socket, System.currentTimeMillis()));
+    String connectionID = UUID.randomUUID().toString();
+    eventStream
+        .publish(new UserConnectionEvent(socket, System.currentTimeMillis(), connectionID, false));
   }
 
   @Override

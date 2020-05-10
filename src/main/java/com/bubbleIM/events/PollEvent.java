@@ -1,5 +1,7 @@
 package com.bubbleIM.events;
 
+import com.google.common.base.MoreObjects;
+
 public class PollEvent extends SocketEvent {
 
   private long readFromTimestamp;
@@ -23,7 +25,7 @@ public class PollEvent extends SocketEvent {
 
   @Override
   public String toString() {
-    return super.getToStringHelper()
+    return MoreObjects.toStringHelper(this)
         .add("readFromTimestamp", readFromTimestamp)
         .add("numberOfMessages", numberOfMessages)
         .toString();

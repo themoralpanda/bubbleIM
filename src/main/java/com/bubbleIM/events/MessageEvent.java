@@ -1,7 +1,13 @@
 package com.bubbleIM.events;
 
-public class MessageEvent extends SocketEvent {
+import com.google.common.base.MoreObjects;
+import org.glassfish.grizzly.websockets.WebSocket;
 
+public class MessageEvent {
+
+  private String connectionID;
+  private WebSocket socket;
+  private long timestamp;
   private String message;
 
   public String getMessage() {
@@ -12,10 +18,37 @@ public class MessageEvent extends SocketEvent {
     this.message = message;
   }
 
+  public String getConnectionID() {
+    return connectionID;
+  }
+
+  public void setConnectionID(String connectionID) {
+    this.connectionID = connectionID;
+  }
+
+  public long getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(long timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public WebSocket getSocket() {
+    return socket;
+  }
+
+  public void setSocket(WebSocket socket) {
+    this.socket = socket;
+  }
+
   @Override
   public String toString() {
-    return super.getToStringHelper()
+    return MoreObjects.toStringHelper(this)
+        .add("connectionID", connectionID)
+        .add("timestamp", timestamp)
         .add("message", message)
+        .add("socket", socket)
         .toString();
   }
 }
