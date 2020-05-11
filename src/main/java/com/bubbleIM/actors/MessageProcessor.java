@@ -2,8 +2,9 @@ package com.bubbleIM.actors;
 
 import akka.actor.UntypedAbstractActor;
 import akka.event.EventStream;
+import com.bubbleIM.Boot;
 import com.bubbleIM.actors.dto.User;
-import com.bubbleIM.events.MessageEvent;
+import com.bubbleIM.events.MessageDispatchEvent;
 import com.bubbleIM.events.internal.ValidationSuccessEvent;
 import com.google.inject.Inject;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class MessageProcessor extends UntypedAbstractActor {
   public MessageProcessor() {
     sockets = new HashSet<>();
     validatedUsers = new HashMap<>();
+    Boot.getInjector().injectMembers(this);
   }
 
   @Override
@@ -34,10 +36,10 @@ public class MessageProcessor extends UntypedAbstractActor {
       User validatedUser = event.getUser();
       validatedUsers.put(validatedUser.getConnectionID(), validatedUser);
       sockets.add(validatedUser.getSocket());
-    } else if (message instanceof MessageEvent) {
-      MessageEvent event = (MessageEvent) message;
+    } else if (message instanceof MessageDispatchEvent) {
+      MessageDispatchEvent event = (MessageDispatchEvent) message;
       String senderID = event.getConnectionID();
-      validatedUsers.get(senderID).getSocket().broadcast(sockets, "Hello");
+      validatedUsers.get(senderID).getSocket().broadcast(sockets, event.getMessage());
     } else {
       super.unhandled(message);
     }

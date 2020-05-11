@@ -3,7 +3,7 @@ package com.bubbleIM.events;
 import com.google.common.base.MoreObjects;
 import org.glassfish.grizzly.websockets.WebSocket;
 
-public class MessageEvent {
+public class NewMessageEvent {
 
   private String connectionID;
   private WebSocket socket;

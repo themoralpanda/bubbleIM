@@ -2,7 +2,7 @@ package com.bubbleIM.events;
 
 import com.google.common.base.MoreObjects;
 
-public class PollEvent extends SocketEvent {
+public class PollMessage extends SocketMessage {
 
   private long readFromTimestamp;
   private int numberOfMessages;

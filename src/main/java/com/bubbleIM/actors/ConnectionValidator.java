@@ -2,6 +2,7 @@ package com.bubbleIM.actors;
 
 import akka.actor.UntypedAbstractActor;
 import akka.event.EventStream;
+import com.bubbleIM.Boot;
 import com.bubbleIM.actors.dto.User;
 import com.bubbleIM.events.LoginEvent;
 import com.bubbleIM.events.SignupEvent;
@@ -27,6 +28,7 @@ public class ConnectionValidator extends UntypedAbstractActor {
   private EventStream eventStream;
 
   public ConnectionValidator() {
+    Boot.getInjector().injectMembers(this);
     unvalidatedConnections = new HashMap<>();
   }
 
